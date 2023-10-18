@@ -1,0 +1,39 @@
+name: Build and Create .deb
+
+on:
+  push:
+    branches:
+      - main  # 根据您的默认分支名进行调整
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the code
+      uses: actions/checkout@v2
+
+    - name: Setup Qt
+      uses: jurplel/setup-qt@v2
+      with:
+        qt-version: '5.15'  # 使用您的 Qt 版本
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential # 或者其他您的项目需要的依赖
+
+    - name: Build project
+      run: qmake && make
+
+    - name: Create .deb file
+      run: |
+        sudo dpkg -b    mydeb_1/      test.deb
+        # 在这里执行创建 .deb 文件的命令
+        # 通常是通过 dpkg-buildpackage 或者其他打包工具
+
+    - name: Upload .deb file
+      uses: actions/upload-artifact@v2
+      with:
+        name: deb-package
+        path: test.deb  # 替换为实际的 .deb 文件路径

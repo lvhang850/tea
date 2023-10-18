@@ -41,7 +41,9 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential # 或者其他您的项目需要的依赖
-
+    - name: install freeglut
+      run: sudo apt-get install freeglut3-dev
+    
     - name: Build project
       run: qmake && make
 

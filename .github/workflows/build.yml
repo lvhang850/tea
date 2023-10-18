@@ -71,13 +71,37 @@ jobs:
         Description: Just A Test
         Version:0.1
         EOF
+
+
+        cat <<EOF > deb-package/DEBIAN/postinst
+        set -e
+        echo "Start to install"
+        echo "Copying tea.desktop..."
+        mv -f /application/lib/tea.desktop /usr/share/applications/
+        echo "Copying tea.png..."
+        mv -f /application/lib/tea.png /usr/share/pixmaps/
+        echo "Copying tea executable..."
+        mv -f /application/tea/* /usr/bin/
+        # 设置环境变量
+        echo "Set QT_PLUGIN_PATH in file .profile"
+        echo "QT_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/qt5/plugins" >> ~/.profile
+        echo "Install ok"
+        EOF
+
+        cat <<EOF > deb-package/DEBIAN/postrm
+        set -e
+        # 执行卸载后的操作
+        echo "Start to remove"
+        rm -f /usr/share/applications/tea.desktop
+        rm -f /usr/share/pixmaps/tea.png
+        rm -rf /usr/bin/tea
+        # 移除环境变量
+        echo "Remove QT_PLUGIN_PATH from file .profile"
+        sed -i '/QT_PLUGIN_PATH/d' ~/.profile
+        echo "Remove finished!"
+        EOF
         
-        cp /path/to/your/executable deb-package/   # 将生成的可执行文件或库文件复制到 DEB 包中
-        # 创建 DEB 软件包的控制文件（例如：control 文件）
-        echo "Package: your-package-name" > deb-package/DEBIAN/control
-        echo "Version: 1.0" >> deb-package/DEBIAN/control
-        echo "Architecture: amd64" >> deb-package/DEBIAN/control
-        # 添加其他控制文件信息
+        
       
 
     - name: Create .deb file

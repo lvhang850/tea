@@ -1,0 +1,14 @@
+#下面是一个基本的例子，按下面格式，改成自己需要的内容即可
+
+[Desktop Entry]
+Version=0.1   #应用程序版本
+Name=tea  #应用程序名
+Comment=just a test  #应用程序描述
+Exec=/usr/bin/tea                     #可运行应用程序最终的绝对路径
+keywords=qt,opengl          #在dasn串搜索时，可用的关键字
+StartupNotify=true                        #这个不知道是什么意思
+Terminal=false                            #运行时不需要打开终端
+Type=Application                          #应用程序类型，在dash和分类中会有显示，还有其它的类型
+Categories=Utility;Application;           #应用程序的分类，工具/应用程序
+Hidden=false                              #是否隐藏（否），不知道是什么意思
+Icon=/usr/share/pixmaps/tea.png       #应用程序图标名的绝对路径

@@ -67,8 +67,10 @@ jobs:
 
       - name: try deb
         run: pwd
+      - name: try d2
+        run: ls
         #sudo dpkg -b    mydeb_1/      tea.deb
-      - uses: actions/checkout@v2
+        
       #   with:
       #     fetch-depth: 1
       # - name: build ubuntu

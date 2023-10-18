@@ -68,7 +68,7 @@ jobs:
       - name: try deb
         run: pwd
       - name: try d2
-        run: ls
+        run: ls - a
         #sudo dpkg -b    mydeb_1/      tea.deb
         
       #   with:

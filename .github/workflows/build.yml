@@ -41,20 +41,48 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential # 或者其他您的项目需要的依赖
+        
     - name: install freeglut
       run: sudo apt-get install freeglut3-dev
     
     - name: Build project
       run: qmake && make
+      
     - name: Install dpkg and fakeroot
       run: |
         sudo apt-get update
         sudo apt-get install -y dpkg fakeroot
+
+    - name: Prepare DEB package structure
+      run: |
+        mkdir -p deb-package/DEBIAN
+        mkdir -p deb-package/application
+
+        cat <<EOF > deb-package/DEBIAN/control
+        Source: tea
+        Section: devel
+        Priority: optional
+        Maintainer: LvHang <850609180@qq.com>
+        Build-Depends: debhelper (>= 12), qt5-default, libqt5opengl5-dev
+        Standards-Version: 4.5.1
+        Package: tea
+        Architecture: amd64
+        Depends: libqt5core5a, libqt5gui5, libqt5opengl5
+        Description: Just A Test
+        Version:0.1
+        EOF
+        
+        cp /path/to/your/executable deb-package/   # 将生成的可执行文件或库文件复制到 DEB 包中
+        # 创建 DEB 软件包的控制文件（例如：control 文件）
+        echo "Package: your-package-name" > deb-package/DEBIAN/control
+        echo "Version: 1.0" >> deb-package/DEBIAN/control
+        echo "Architecture: amd64" >> deb-package/DEBIAN/control
+        # 添加其他控制文件信息
       
 
     - name: Create .deb file
       run: |
-        sudo dpkg -b    mydeb_1/      test.deb
+        sudo dpkg -b    deb-package/      test.deb
         # 在这里执行创建 .deb 文件的命令
         # 通常是通过 dpkg-buildpackage 或者其他打包工具
 
